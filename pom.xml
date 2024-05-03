@@ -53,11 +53,6 @@
 			<artifactId>jackson-databind-nullable</artifactId>
 			<version>0.2.1</version>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.springdoc</groupId>-->
-<!--			<artifactId>springdoc-openapi-ui</artifactId>-->
-<!--			<version>1.7.0</version>-->
-<!--		</dependency>-->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
@@ -123,7 +118,7 @@
 			<plugin>
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
-				<version>7.1.0</version>
+				<version>7.4.0</version>
 				<executions>
 					<execution>
 						<goals>
@@ -140,8 +135,9 @@
 								<useSpringBoot3>true</useSpringBoot3>
 								<delegatePattern>true</delegatePattern>
 								<dateLibrary>java8</dateLibrary>
-								<useResponseEntity>true</useResponseEntity>
+								<useResponseEntity>false</useResponseEntity>
 								<useSpringController>true</useSpringController>
+								<requestMappingMode>api_interface</requestMappingMode>
 								<hideGenerationTimestamp>true</hideGenerationTimestamp>
 								<additionalModelTypeAnnotations>
 									@lombok.Data
