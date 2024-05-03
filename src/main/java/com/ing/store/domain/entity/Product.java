@@ -4,6 +4,7 @@ import com.ing.store.domain.enums.ProductType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.GenericGenerator;
@@ -12,8 +13,8 @@ import org.springframework.data.relational.core.mapping.Column;
 import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
+@Table(name = "products")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -29,4 +30,6 @@ public class Product {
     String description;
 
     ProductType type;
+
+    Integer quantity;
 }
