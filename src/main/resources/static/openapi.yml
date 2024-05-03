@@ -6,3 +6,60 @@ info:
 servers:
   - url: http://localhost:8080
     description: Optional server description, e.g. Main (production) server
+paths:
+  /products/{productId}:
+    get:
+      operationId: getProductById
+      summary: Returns a product by ID.
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: The ID of the product to return.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: A product object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: The specified user ID is invalid (not a number).
+        '404':
+          description: A user with the specified ID was not found.
+        default:
+          description: Unexpected error
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 4
+        description:
+          type: string
+          example: FlexTexture® scrubbing tool you control your scrubbing power. Scrub Daddy is soft, compressible, and more absorbent in warm water. In cold water he’s firm and can remove stubborn debris without the need for added harsh chemicals.
+        price:
+          type: number
+          format: double
+          example: 12.4
+        productType:
+          $ref: '#/components/schemas/ProductType'
+        quantity:
+          type: integer
+          example: 23
+      required:
+        - id
+    ProductType:
+      type: string
+      enum:
+        - clothing
+        - furniture
+        - electronics
+        - food
+        - other

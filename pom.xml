@@ -134,16 +134,13 @@
 								${project.basedir}/src/main/resources/static/openapi.yml
 							</inputSpec>
 							<generatorName>spring</generatorName>
-							<apiPackage>com.ing.store.api</apiPackage>
-							<modelPackage>com.ing.store.model</modelPackage>
-							<invokerPackage>com.ing.store.invoker</invokerPackage>
 							<library>spring-boot</library>
 							<modelNameSuffix>Dto</modelNameSuffix>
 							<configOptions>
-								<configPackage>com.ing.store.config</configPackage>
 								<useSpringBoot3>true</useSpringBoot3>
 								<delegatePattern>true</delegatePattern>
 								<dateLibrary>java8</dateLibrary>
+								<requestMappingMode>api_interface</requestMappingMode>
 							</configOptions>
 						</configuration>
 					</execution>
