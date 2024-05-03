@@ -28,9 +28,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Product'
         '400':
-          description: The specified user ID is invalid (not a number).
+          description: The specified product ID is invalid (not a number).
         '404':
-          description: A user with the specified ID was not found.
+          description: A product with the specified ID was not found.
         default:
           description: Unexpected error
 components:

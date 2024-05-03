@@ -1,11 +1,11 @@
 package com.ing.store.service;
 
 import com.ing.store.domain.entity.Product;
-import org.springframework.stereotype.Service;
 
-@Service
+import java.util.Optional;
+
 public interface ProductService {
 
-    Product getProductById(Integer id);
+    Optional<Product> getProductById(Integer id);
 
 }

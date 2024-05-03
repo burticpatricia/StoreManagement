@@ -7,17 +7,19 @@ import com.ing.store.service.ProductService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 
+@Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DefaultProductService implements ProductService {
     @Autowired
     ProductRepository productRepository;
 
     @Override
-    public Product getProductById(Integer id) {
-        return productRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public Optional<Product> getProductById(Integer id) {
+        return productRepository.findById(id);
     }
 
 }

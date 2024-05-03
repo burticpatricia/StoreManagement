@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan({"org.openapitools.api", "com.ing.store.controller"})
+@ComponentScan({"org.openapitools.api", "com.ing.store"})
 public class StoreApplication {
 
 	public static void main(String[] args) {

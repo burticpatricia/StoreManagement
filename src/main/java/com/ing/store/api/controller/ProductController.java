@@ -1,5 +1,6 @@
-package com.ing.store.controller;
+package com.ing.store.api.controller;
 
+import com.ing.store.api.mapper.ProductMapper;
 import com.ing.store.service.ProductService;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,10 +19,13 @@ import org.springframework.stereotype.Component;
 public class ProductController implements ProductsApiDelegate {
 
     @Autowired
-    ProductService productService;
+    ProductService service;
+
+    @Autowired
+    ProductMapper mapper;
 
     @Override
     public ProductDto getProductById(Integer productId) {
-        return new ProductDto(productId, "hello", 3.3d, ProductTypeDto.FOOD, 45);
+        return mapper.dtoFromProduct(service.getProductById(productId).orElseThrow());
     }
 }
