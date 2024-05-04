@@ -8,9 +8,10 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.openapitools.api.ProductsApiDelegate;
 import org.openapitools.model.ProductDto;
-import org.openapitools.model.ProductTypeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @NoArgsConstructor
@@ -28,4 +29,25 @@ public class ProductController implements ProductsApiDelegate {
     public ProductDto getProductById(Integer productId) {
         return mapper.dtoFromProduct(service.getProductById(productId).orElseThrow());
     }
+
+    @Override
+    public ProductDto addProduct(ProductDto productDto) {
+        return null;
+    }
+
+    @Override
+    public ProductDto deleteProductById(Integer productId) {
+        return null;
+    }
+
+    @Override
+    public ProductDto updateProductById(Integer productId, ProductDto productDto) {
+        return null;
+    }
+
+    @Override
+    public List<ProductDto> getAllProducts() {
+        return null;
+    }
+
 }

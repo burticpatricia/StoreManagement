@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,6 +21,26 @@ public class DefaultProductService implements ProductService {
     @Override
     public Optional<Product> getProductById(Integer id) {
         return productRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Product> addProduct(Product product) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Product> deleteProductById(Integer id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Product> getAllProducts() {
+        return null;
+    }
+
+    @Override
+    public Optional<Product> updateProductById(Integer id, Product newProduct) {
+        return Optional.empty();
     }
 
 }
