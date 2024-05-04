@@ -10,11 +10,16 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class EntityNotFoundException extends RuntimeException {
 
+    public static final String ENTITY_WITH_GIVEN_ID_NOT_FOUND = "Entity with given id not found.";
     String clazz;
     Integer id;
 
     @Override
     public String getMessage() {
-        return String.format("Entity of type %s  with id %d was found.", clazz, id);
+        return (clazz != null && id != null) ? String.format("Entity of type %s  with id %d was not found.", clazz, id) : ENTITY_WITH_GIVEN_ID_NOT_FOUND;
+    }
+
+    public EntityNotFoundException() {
+        super(ENTITY_WITH_GIVEN_ID_NOT_FOUND);
     }
 }

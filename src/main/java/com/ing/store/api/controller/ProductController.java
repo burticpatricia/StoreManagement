@@ -1,6 +1,7 @@
 package com.ing.store.api.controller;
 
 import com.ing.store.api.mapper.ProductMapper;
+import com.ing.store.exception.EntityNotFoundException;
 import com.ing.store.service.ProductService;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -29,13 +30,13 @@ public class ProductController implements ProductsApiDelegate {
 
     @Override
     public ProductDto getProductById(Integer productId) {
-        log.debug("Get product with id: " + productId);
-        return mapper.dtoFromProduct(service.getProductById(productId).orElseThrow());
+        log.info("Get product with id: " + productId);
+        return mapper.dtoFromProduct(service.getProductById(productId).orElseThrow(EntityNotFoundException::new));
     }
 
     @Override
     public ProductDto addProduct(ProductDto productDto) {
-        log.debug("Add new product.");
+        log.info("Add new product.");
         return mapper.dtoFromProduct(
                 service.addProduct(
                         mapper.productFromDto(productDto)
@@ -45,13 +46,13 @@ public class ProductController implements ProductsApiDelegate {
 
     @Override
     public ProductDto deleteProductById(Integer productId) {
-        log.debug("Delete product with id: " + productId);
+        log.info("Delete product with id: " + productId);
         return mapper.dtoFromProduct(service.deleteProductById(productId));
     }
 
     @Override
     public ProductDto updateProductById(Integer productId, ProductDto productDto) {
-        log.debug("Update product with id: " + productId);
+        log.info("Update product with id: " + productId);
         return mapper.dtoFromProduct(
                 service.updateProductById(productId, mapper.productFromDto(productDto)).orElseThrow()
         );
@@ -59,7 +60,7 @@ public class ProductController implements ProductsApiDelegate {
 
     @Override
     public List<ProductDto> getAllProducts() {
-        log.debug("Get all products");
+        log.info("Get all products");
         return mapper.dtoListFromProductList(service.getAllProducts());
     }
 }

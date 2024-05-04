@@ -29,10 +29,22 @@ paths:
                 $ref: '#/components/schemas/Product'
         '400':
           description: The specified product ID is invalid (not a number).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
         '404':
           description: A product with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
         default:
           description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
     delete:
       operationId: deleteProductById
       summary: Return the deleted product.
@@ -54,10 +66,22 @@ paths:
                 $ref: '#/components/schemas/Product'
         '400':
           description: The specified product ID is invalid (not a number).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
         '404':
           description: A product with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
         default:
           description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
     put:
       operationId: updateProductById
       summary: Return the updated product.
@@ -86,10 +110,22 @@ paths:
                 $ref: '#/components/schemas/Product'
         '400':
           description: There was a problem with the given request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
         '404':
           description: A product with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
         default:
           description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
   /products:
     get:
       operationId: getAllProducts
@@ -105,6 +141,10 @@ paths:
                   $ref: '#/components/schemas/Product'
         default:
           description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
   /products/add-product:
     post:
       operationId: addProduct
@@ -125,8 +165,16 @@ paths:
                 $ref: '#/components/schemas/Product'
         '400':
           description: There was a problem with the given request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
         default:
           description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
 components:
   schemas:
     Product:
@@ -155,3 +203,16 @@ components:
         - electronics
         - food
         - other
+    StoreApiException:
+      type: object
+      properties:
+        status:
+          type: string
+          example: NOT_FOUND
+        timestamp:
+          type: string
+          format: datetime
+          example: "04-05-2024 01:57:08"
+        message:
+          type: string
+          example: Entity was not found.

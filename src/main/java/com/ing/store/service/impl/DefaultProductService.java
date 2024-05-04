@@ -37,13 +37,13 @@ public class DefaultProductService implements ProductService {
         val maybeProductToBeDeleted = productRepository.findById(id);
         maybeProductToBeDeleted.ifPresentOrElse(
                 (productToBeDeleted) -> {
-                    log.debug("Found product with id: " + id + ". Will delete it");
+                    log.info("Found product with id: " + id + ". Will delete it");
                     productRepository.delete(productToBeDeleted);
-                    log.debug("Product with id: " + id + " was deleted.");
+                    log.info("Product with id: " + id + " was deleted.");
                 },
                 () -> {
                     log.error("Did not find product with id: " + id);
-                    throw new EntityNotFoundException(Product.class.getName(), id);
+                    throw new EntityNotFoundException("product", id);
                 }
         );
         return maybeProductToBeDeleted.get();
