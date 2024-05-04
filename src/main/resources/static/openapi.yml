@@ -5,12 +5,12 @@ info:
   version: 0.0.1
 servers:
   - url: http://localhost:8080
-    description: Optional server description, e.g. Main (production) server
+    description: Main server
 paths:
   /products/{productId}:
     get:
       operationId: getProductById
-      summary: Returns a product by ID.
+      summary: Return a product by ID.
       parameters:
         - name: productId
           in: path
@@ -33,6 +33,100 @@ paths:
           description: A product with the specified ID was not found.
         default:
           description: Unexpected error
+    delete:
+      operationId: deleteProductById
+      summary: Return the deleted product.
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: The ID of the product to delete.
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+      responses:
+        '200':
+          description: The product object was deleted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: The specified product ID is invalid (not a number).
+        '404':
+          description: A product with the specified ID was not found.
+        default:
+          description: Unexpected error
+    put:
+      operationId: updateProductById
+      summary: Return the updated product.
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: The ID of the product to update.
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+      requestBody:
+        description: The new details of product to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: The product object was updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: There was a problem with the given request.
+        '404':
+          description: A product with the specified ID was not found.
+        default:
+          description: Unexpected error
+  /products:
+    get:
+      operationId: getAllProducts
+      summary: Return all products.
+      responses:
+        '200':
+          description: A list of product object.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        default:
+          description: Unexpected error
+  /products/add-product:
+    post:
+      operationId: addProduct
+      summary: Add a new product
+      requestBody:
+        description: The product to be added
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: A product object was created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: There was a problem with the given request.
+        default:
+          description: Unexpected error
 components:
   schemas:
     Product:
@@ -53,8 +147,6 @@ components:
         quantity:
           type: integer
           example: 23
-      required:
-        - id
     ProductType:
       type: string
       enum:
