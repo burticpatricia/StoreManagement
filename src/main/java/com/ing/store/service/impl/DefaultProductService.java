@@ -2,10 +2,12 @@ package com.ing.store.service.impl;
 
 
 import com.ing.store.domain.entity.Product;
+import com.ing.store.exception.EntityNotFoundException;
 import com.ing.store.repository.ProductRepository;
 import com.ing.store.service.ProductService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,22 +27,33 @@ public class DefaultProductService implements ProductService {
 
     @Override
     public Optional<Product> addProduct(Product product) {
-        return Optional.empty();
+        return Optional.of(productRepository.save(product));
     }
 
     @Override
-    public Optional<Product> deleteProductById(Integer id) {
-        return Optional.empty();
+    public Product deleteProductById(Integer id) throws EntityNotFoundException {
+        val maybeProductToBeDeleted = productRepository.findById(id);
+        maybeProductToBeDeleted.ifPresentOrElse(
+                (productToBeDeleted) -> {
+                    productRepository.delete(productToBeDeleted);
+                },
+                () -> {
+                    throw new EntityNotFoundException(Product.class.getName(), id);
+                }
+        );
+        return maybeProductToBeDeleted.get();
+
     }
 
     @Override
     public List<Product> getAllProducts() {
-        return null;
+        return productRepository.findAll();
     }
 
     @Override
     public Optional<Product> updateProductById(Integer id, Product newProduct) {
-        return Optional.empty();
+        newProduct.setId(id);
+        return Optional.of(productRepository.save(newProduct));
     }
 
 }

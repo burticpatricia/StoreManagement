@@ -32,22 +32,27 @@ public class ProductController implements ProductsApiDelegate {
 
     @Override
     public ProductDto addProduct(ProductDto productDto) {
-        return null;
+        return mapper.dtoFromProduct(
+                service.addProduct(
+                        mapper.productFromDto(productDto)
+                ).orElseThrow()
+        );
     }
 
     @Override
     public ProductDto deleteProductById(Integer productId) {
-        return null;
+        return mapper.dtoFromProduct(service.deleteProductById(productId));
     }
 
     @Override
     public ProductDto updateProductById(Integer productId, ProductDto productDto) {
-        return null;
+        return mapper.dtoFromProduct(
+                service.updateProductById(productId, mapper.productFromDto(productDto)).orElseThrow()
+        );
     }
 
     @Override
     public List<ProductDto> getAllProducts() {
-        return null;
+        return mapper.dtoListFromProductList(service.getAllProducts());
     }
-
 }
