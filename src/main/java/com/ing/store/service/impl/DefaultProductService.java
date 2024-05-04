@@ -7,6 +7,7 @@ import com.ing.store.repository.ProductRepository;
 import com.ing.store.service.ProductService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DefaultProductService implements ProductService {
     @Autowired
@@ -35,9 +37,12 @@ public class DefaultProductService implements ProductService {
         val maybeProductToBeDeleted = productRepository.findById(id);
         maybeProductToBeDeleted.ifPresentOrElse(
                 (productToBeDeleted) -> {
+                    log.debug("Found product with id: " + id + ". Will delete it");
                     productRepository.delete(productToBeDeleted);
+                    log.debug("Product with id: " + id + " was deleted.");
                 },
                 () -> {
+                    log.error("Did not find product with id: " + id);
                     throw new EntityNotFoundException(Product.class.getName(), id);
                 }
         );
