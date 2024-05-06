@@ -1,6 +1,8 @@
 package com.ing.store.api.errorhandling;
 
+import com.ing.store.exception.ApiAuthenticationException;
 import com.ing.store.exception.EntityNotFoundException;
+import org.openapitools.model.AuthExceptionDto;
 import org.openapitools.model.StoreApiExceptionDto;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -22,10 +24,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleEntityNotFound(
             EntityNotFoundException ex) {
         StoreApiExceptionDto apiException = new StoreApiExceptionDto(NOT_FOUND.name(), LocalDateTime.now().toString(), ex.getMessage());
-        return buildResponseEntity(apiException);
+        return buildStoreApiExceptionDtoResponseEntity(apiException);
     }
 
-    private ResponseEntity<Object> buildResponseEntity(StoreApiExceptionDto apiException) {
+    @ExceptionHandler(ApiAuthenticationException.class)
+    protected ResponseEntity<Object> handleAuthenticationException(ApiAuthenticationException ex) {
+        AuthExceptionDto apiException = new AuthExceptionDto(LocalDateTime.now().toString(), ex.getMessage());
+        return buildAuthExceptionDtoResponseEntity(apiException);
+    }
+
+    private ResponseEntity<Object> buildStoreApiExceptionDtoResponseEntity(StoreApiExceptionDto apiException) {
         return new ResponseEntity<>(apiException, HttpStatus.valueOf(apiException.getStatus()));
+    }
+
+    private ResponseEntity<Object> buildAuthExceptionDtoResponseEntity(AuthExceptionDto apiException) {
+        return new ResponseEntity<>(apiException, HttpStatus.UNAUTHORIZED);
     }
 }

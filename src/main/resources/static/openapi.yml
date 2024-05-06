@@ -4,13 +4,43 @@ info:
   description: API that acts as a store management tool.
   version: 0.0.1
 servers:
-  - url: http://localhost:8080
+  - url: http://localhost:8080/api
     description: Main server
 paths:
+  /auth/login:
+    post:
+      operationId: login
+      summary: Login with a user.
+      tags:
+        [Authentication]
+      requestBody:
+        description: Details of the user who wants to login
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: The generated JWT.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JWToken'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthException'
   /products/{productId}:
     get:
       operationId: getProductById
       summary: Return a product by ID.
+      security:
+        - bearerAuth: [ ]
+      tags:
+        [Products]
       parameters:
         - name: productId
           in: path
@@ -48,6 +78,10 @@ paths:
     delete:
       operationId: deleteProductById
       summary: Return the deleted product.
+      tags:
+        [Products]
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: productId
           in: path
@@ -85,6 +119,10 @@ paths:
     put:
       operationId: updateProductById
       summary: Return the updated product.
+      tags:
+        [Products]
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: productId
           in: path
@@ -130,6 +168,10 @@ paths:
     get:
       operationId: getAllProducts
       summary: Return all products.
+      security:
+        - bearerAuth: [ ]
+      tags:
+        [Products]
       responses:
         '200':
           description: A list of product object.
@@ -149,6 +191,10 @@ paths:
     post:
       operationId: addProduct
       summary: Add a new product
+      tags:
+        [Products]
+      security:
+        - bearerAuth: [ ]
       requestBody:
         description: The product to be added
         required: true
@@ -176,6 +222,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/StoreApiException'
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     Product:
       type: object
@@ -203,6 +254,21 @@ components:
         - electronics
         - food
         - other
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          example: my_basic_username
+        password:
+          type: string
+          example: myPassword123!!
+    JWToken:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
     StoreApiException:
       type: object
       properties:
@@ -216,3 +282,13 @@ components:
         message:
           type: string
           example: Entity was not found.
+    AuthException:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: datetime
+          example: "04-05-2024 01:57:08"
+        message:
+          type: string
+          example: Username was not found.
