@@ -3,6 +3,7 @@
 ## Tools used:
 - [Springboot](https://spring.io/projects/spring-boot)
 - [SpringData](https://spring.io/projects/spring-data-jpa)
+- [SpringSecurity](https://spring.io/projects/spring-security)
 - [Maven](https://maven.apache.org/download.cgi)
 - [Lombok](https://projectlombok.org)
 - [Postgresql](https://www.postgresql.org) 
