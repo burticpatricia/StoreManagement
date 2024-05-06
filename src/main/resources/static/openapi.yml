@@ -1,0 +1,294 @@
+openapi: 3.0.0
+info:
+  title: Store Management API
+  description: API that acts as a store management tool.
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/api
+    description: Main server
+paths:
+  /auth/login:
+    post:
+      operationId: login
+      summary: Login with a user.
+      tags:
+        [ Authentication ]
+      requestBody:
+        description: Details of the user who wants to login
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: The generated JWT.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JWToken'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthException'
+  /products/{productId}:
+    get:
+      operationId: getProductById
+      summary: Return a product by ID.
+      security:
+        - bearerAuth: [ ]
+      tags:
+        [ Products ]
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: The ID of the product to return.
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+      responses:
+        '200':
+          description: A product object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: The specified product ID is invalid (not a number).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
+        '404':
+          description: A product with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
+    delete:
+      operationId: deleteProductById
+      summary: Return the deleted product.
+      tags:
+        [ Products ]
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: The ID of the product to delete.
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+      responses:
+        '200':
+          description: The product object was deleted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: The specified product ID is invalid (not a number).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
+        '404':
+          description: A product with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
+    put:
+      operationId: updateProductById
+      summary: Return the updated product.
+      tags:
+        [ Products ]
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: The ID of the product to update.
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+      requestBody:
+        description: The new details of product to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: The product object was updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: There was a problem with the given request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
+        '404':
+          description: A product with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
+  /products:
+    get:
+      operationId: getAllProducts
+      summary: Return all products.
+      security:
+        - bearerAuth: [ ]
+      tags:
+        [ Products ]
+      responses:
+        '200':
+          description: A list of product object.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
+  /products/add-product:
+    post:
+      operationId: addProduct
+      summary: Add a new product
+      tags:
+        [ Products ]
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        description: The product to be added
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: A product object was created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: There was a problem with the given request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreApiException'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 4
+        description:
+          type: string
+          example: FlexTexture® scrubbing tool you control your scrubbing power. Scrub Daddy is soft, compressible, and more absorbent in warm water. In cold water he’s firm and can remove stubborn debris without the need for added harsh chemicals.
+        price:
+          type: number
+          format: double
+          example: 12.4
+        productType:
+          $ref: '#/components/schemas/ProductType'
+        quantity:
+          type: integer
+          example: 23
+    ProductType:
+      type: string
+      enum:
+        - clothing
+        - furniture
+        - electronics
+        - food
+        - other
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          example: my_basic_username
+        password:
+          type: string
+          example: myPassword123!!
+    JWToken:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+    StoreApiException:
+      type: object
+      properties:
+        status:
+          type: string
+          example: NOT_FOUND
+        timestamp:
+          type: string
+          format: datetime
+          example: "04-05-2024 01:57:08"
+        message:
+          type: string
+          example: Entity was not found.
+    AuthException:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: datetime
+          example: "04-05-2024 01:57:08"
+        message:
+          type: string
+          example: Username was not found.
