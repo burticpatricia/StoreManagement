@@ -1,6 +1,5 @@
 package com.ing.store.service.impl;
 
-import com.ing.store.domain.entity.User;
 import com.ing.store.exception.UsernameNotFoundException;
 import com.ing.store.repository.UserRepository;
 import com.ing.store.service.UserService;

@@ -19,9 +19,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class SecurityConfiguration {
 
-    @Autowired
-    private JwtFilter jwtFilter;
-
     private static final String[] AUTH_WHITELIST = {
             "/swagger-resources",
             "/swagger-resources/**",
@@ -37,6 +34,8 @@ public class SecurityConfiguration {
             "/openapi.yml",
             "/api/auth/login",
     };
+    @Autowired
+    private JwtFilter jwtFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
